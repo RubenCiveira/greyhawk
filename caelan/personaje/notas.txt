@@ -1,0 +1,10 @@
+NOTAS DE REGLAS · CAELAN (D&D 3.5)
+
+- CA 16 = 10 + 3 cuero tachonado + 1 escudo ligero + 2 DES.
+- PG 10 = d8 máximo + 2 CON, nivel 1.
+- 32 puntos de habilidad iniciales: (6 + 1 INT + 1 humano) × 4. La distribución propuesta suma 32.
+- Penalizador por armadura −2 (cuero tachonado −1, escudo ligero −1): aplicado a Esconderse y Moverse sigilosamente.
+- Disparo a bocajarro: +1 ataque y daño con armas a distancia hasta 30 pies (configurado como bonus de la daga).
+- La daga tiene incremento de alcance 10 pies (máximo 5 incrementos, 50 pies); −2 al ataque por cada incremento tras el primero.
+- Enemigo predilecto aún debe elegirse; no está incluido en ataques.
+- El perro es un acompañante narrativo, no un compañero animal de clase a nivel 1.

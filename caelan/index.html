@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ficha D&amp;D 3.5</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../theme.css">
+</head>
+<!-- Página genérica: sirve igual para cualquier personaje.
+     data-root: raíz del proyecto · data-char: carpeta del personaje · data-view: todo | ficha | presentacion | historia -->
+<body data-root="../" data-char="" data-view="todo">
+<div class="toolbar">
+  <a class="back" href="../index.html">← Personajes</a>
+  <button onclick="window.print()">Imprimir / Guardar PDF</button>
+  <label class="pick">Preludio
+    <select id="prelude-select">
+      <option value="presentacion">Presentación (1 hoja)</option>
+      <option value="historia">Historia</option>
+      <option value="ambas" selected>Ambas</option>
+      <option value="ninguna">Ninguna</option>
+    </select>
+  </label>
+  <span>Edita los archivos de <code>personaje/</code> y recarga. También puedes editar los textos haciendo clic en ellos.</span>
+</div>
+
+<!-- Todo el contenido se genera desde la carpeta personaje/ -->
+<div id="app"></div>
+
+<script src="personaje/character-data.js"></script>
+<script src="personaje/presentacion.js"></script>
+<script src="personaje/historia.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>
