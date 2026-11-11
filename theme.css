@@ -1,0 +1,399 @@
+/* Ficha ilustrada sobre pergamino, inspirada en las hojas sample-*.jpg.
+   Tamaño fijo A4 (210 × 297 mm ≈ 794 × 1123 px); el escenario central usa coordenadas en px.
+   Genérico para cualquier personaje: el encuadre de las imágenes llega como variables
+   (--portrait-top, --img-size, --img-top, --figure-w, --figure-h, --figure-shape)
+   desde personaje/character-data.js → images. Aquí solo están los valores por defecto. */
+:root{
+  --portrait-top:100px;
+  --img-size:90%;
+  --img-top:4px;
+  --figure-w:440px;
+  --figure-h:660px;
+  --figure-shape:inset(0);
+  --ink:#3a2a18;
+  --ink-soft:#6b5233;
+  --paper:#f4e8cc;
+  --paper-hi:#fffaf0;
+  --gold:linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#a8772c 45%,#fbe7a2 62%,#8a5f22 82%,#e9c470 100%);
+  --gold-ring:conic-gradient(from 20deg,#f7e08f,#8a5f22,#fbe9a6,#6e4a18,#f3d27a,#9b6c28,#f7e08f);
+  --plaque:linear-gradient(#5b3d1d,#2c1c0c);
+  --bar:linear-gradient(#4a4426,#24210f 60%,#3a361d);
+  --title:"Luminari","Trattatello","Papyrus","Palatino Linotype",Georgia,serif;
+  --small:"Palatino Linotype",Palatino,Georgia,serif
+}
+
+/* ---------- Hoja ---------- */
+.sheet{
+  position:relative;
+  width:210mm;height:297mm;
+  margin:0 auto 30px;padding:14px;
+  overflow:hidden;
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 62% 38%,#fffdf3 0,#fffdf300 70%),
+    radial-gradient(ellipse at 50% 45%,#f8eed6 0,#efe0bd 60%,#d8bd8a 100%);
+  box-shadow:0 12px 50px #000a,inset 0 0 60px #9c7a4366
+}
+.sheet:before{ /* manchas suaves del pergamino */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:
+    radial-gradient(circle at 12% 18%,#c9a86a55 0 6%,transparent 14%),
+    radial-gradient(circle at 88% 72%,#c9a86a44 0 5%,transparent 12%),
+    radial-gradient(circle at 30% 92%,#b8935544 0 7%,transparent 15%)
+}
+
+/* ---------- Cabecera ---------- */
+.head{position:relative;display:grid;grid-template-columns:270px 1fr;gap:18px;height:92px;margin-bottom:6px}
+.nameplate{
+  position:relative;align-self:center;
+  padding:6px 16px 7px;text-align:center;
+  background:linear-gradient(#fffaf0,#f1e3c2);
+  border:3px solid #6e4a18;border-radius:6px 26px 6px 26px;
+  box-shadow:0 0 0 3px #e7c879,0 0 0 5px #6e4a18,0 4px 10px #0006,inset 0 0 14px #b08a4d55
+}
+.eyebrow{font:bold 8px/1 system-ui;letter-spacing:2px;color:#2c1c0c}
+h1{margin:3px 0 0;font:700 32px/1.05 var(--title);color:#2c1c0c;letter-spacing:1px}
+.subtitle{font:italic 11px var(--small);color:var(--ink-soft)}
+
+.scroll{position:relative;padding:0 26px}
+.scroll:before,.scroll:after{ /* rodillos del pergamino */
+  content:"";position:absolute;top:-2px;bottom:-2px;width:22px;border-radius:11px;
+  background:linear-gradient(90deg,#6e4a18,#e9c98a 35%,#fff1c8 50%,#b48a4c 70%,#5b3d1d);
+  box-shadow:0 3px 6px #0006
+}
+.scroll:before{left:0}.scroll:after{right:0}
+.scroll-body{
+  height:100%;padding:10px 16px 6px;
+  background:linear-gradient(#f9eed4,#e9d6ad);
+  border-top:2px solid #a07a3e;border-bottom:2px solid #a07a3e;
+  box-shadow:inset 0 6px 10px -6px #6e4a1888,inset 0 -6px 10px -6px #6e4a1888
+}
+.identity{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:4px 14px;align-content:center}
+.identity>div{display:flex;flex-direction:column}
+.identity strong{display:block;min-height:17px;font:15px/1.1 var(--title);border-bottom:1px solid #8c6b3e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.identity small{font:bold 7px system-ui;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+
+/* ---------- Escenario central ---------- */
+.stage{position:relative;height:590px}
+.stage-art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.magic{stroke:#9b8461;stroke-width:1.2;opacity:.6}
+.magic text{fill:#8a7350;stroke:none;font-size:15px;letter-spacing:5px}
+.arc,.arc-shadow{fill:none;stroke-linecap:round}
+.arc-shadow{stroke:#3e2a10;stroke-width:15}
+.arc{stroke:url(#goldArc);stroke-width:10}
+
+.portrait{ /* ventana circular difuminada; posición con --portrait-top, imagen con --img-size y --img-top */
+  position:absolute;z-index:0;left:250px;top:var(--portrait-top);width:460px;height:484px;overflow:hidden;
+  mix-blend-mode:multiply; /* el fondo blanco del dibujo se funde con el pergamino */
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 94%);
+          mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 94%)
+}
+.portrait img{display:block;width:var(--img-size);height:auto;margin:var(--img-top) 0 0 calc((100% - var(--img-size)) / 2)}
+
+/* Monedas (círculo dorado con número) */
+.coin{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  font:700 18px/1 var(--title);color:#2c1c0c;
+  background:radial-gradient(circle at 50% 40%,#fffdf5,#efe0bd 70%,#d3b781);
+  border:4px solid transparent;
+  background-clip:padding-box;
+  box-shadow:0 0 0 1px #4a3210,0 0 0 4px #e1bd68,0 0 0 5px #4a3210,0 3px 6px #0007
+}
+/* Cintas de las insignias */
+.ribbon{
+  display:inline-block;padding:4px 14px 4px 18px;
+  font:bold 9px/1 system-ui;letter-spacing:1px;text-transform:uppercase;color:#fbecc0;
+  text-shadow:0 1px 1px #000;white-space:nowrap;
+  border:1px solid #e1bd68;border-radius:3px;
+  box-shadow:0 0 0 1px #4a3210,0 2px 4px #0006
+}
+.ribbon.gold{background:linear-gradient(#a2783a,#5b3d1d)}
+.ribbon.purple{background:linear-gradient(#8b5bb0,#4a2468)}
+.ribbon.red{background:linear-gradient(#b8382d,#6a1510)}
+.badge{position:absolute;z-index:3;display:flex;align-items:center}
+.badge .coin{margin-left:-6px}
+.b-bab{left:4px;top:6px}
+.b-grapple{left:172px;top:0;flex-direction:column}
+.b-grapple .coin{margin:3px 0 0}
+.b-init{left:470px;top:8px}
+
+/* Escudo de la CA */
+.shield{
+  position:absolute;z-index:3;right:6px;top:0;width:88px;height:100px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--gold);
+  clip-path:polygon(50% 0,100% 12%,100% 55%,50% 100%,0 55%,0 12%);
+  filter:drop-shadow(0 3px 4px #0008)
+}
+.shield:before{
+  content:"";position:absolute;inset:6px;
+  background:radial-gradient(circle at 50% 35%,#fffdf5,#e9d6ad 75%);
+  clip-path:inherit
+}
+.shield b{position:relative;font:700 34px/1 var(--title);color:#2c1c0c;margin-top:-6px}
+.shield span{position:relative;font:bold 11px system-ui;letter-spacing:2px;color:#4a3210}
+
+/* Salvaciones */
+.saves{position:absolute;z-index:3;left:0;top:76px;width:232px;height:118px}
+.crest{
+  margin:0 18px;padding:6px 0;text-align:center;
+  font:bold 9px/1 system-ui;letter-spacing:1.5px;text-transform:uppercase;color:#2c1c0c;
+  background:var(--gold);border-radius:30px 30px 6px 6px;
+  box-shadow:0 0 0 1px #4a3210,0 3px 5px #0006
+}
+.save-row{
+  display:flex;justify-content:center;gap:16px;margin-top:-2px;padding:10px 6px 0;
+  background:linear-gradient(#b48a4c,#6e4a18);border-radius:8px;height:86px;
+  box-shadow:inset 0 0 0 2px #e7c879,inset 0 0 0 3px #4a3210,0 3px 6px #0006
+}
+.save{display:flex;flex-direction:column;align-items:center}
+.save .coin{width:44px;height:44px;font-size:19px;position:relative;z-index:1}
+.flag{
+  margin-top:-4px;width:40px;padding:8px 0 10px;text-align:center;
+  font:bold 9px/1 system-ui;letter-spacing:1px;text-transform:uppercase;color:#fbecc0;text-shadow:0 1px 1px #000;
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)
+}
+.fort .flag{background:linear-gradient(#b8382d,#6a1510)}
+.ref .flag{background:linear-gradient(#2f8a74,#124a3c)}
+.will .flag{background:linear-gradient(#8b5bb0,#4a2468)}
+
+/* Libro de habilidades */
+.book{
+  position:absolute;z-index:3;left:0;top:206px;width:236px;height:378px;
+  padding:6px 22px 8px 10px;
+  background:linear-gradient(90deg,#e8d4a6,#f8eed4 12%,#f4e6c4 85%,#d9c08a);
+  border:2px solid #8a6a38;border-right:none;border-radius:8px 0 0 8px;
+  box-shadow:0 4px 10px #0007,inset 0 0 18px #a0804a66
+}
+.book:after{ /* lomo azul con herrajes dorados */
+  content:"";position:absolute;top:-6px;bottom:-6px;right:-10px;width:22px;border-radius:3px 8px 8px 3px;
+  background:
+    linear-gradient(#e1bd68,#7a5418) 0 18%/100% 26px no-repeat,
+    linear-gradient(#e1bd68,#7a5418) 0 78%/100% 26px no-repeat,
+    linear-gradient(90deg,#1c2f55,#3b5a92 45%,#1c2f55);
+  box-shadow:0 0 0 1px #2c1c0c,2px 3px 6px #0007
+}
+.book-title{
+  margin:0 6px 6px;padding:5px 0 4px;text-align:center;
+  font:700 18px/1 var(--title);letter-spacing:2px;text-transform:uppercase;color:#2c1c0c;
+  background:linear-gradient(#f3e3b8,#d8bd84);border:2px solid #8a6a38;border-radius:14px 14px 4px 4px;
+  box-shadow:inset 0 0 0 2px #fff3d0
+}
+.book-lines{display:flex;flex-direction:column}
+.skill{display:grid;grid-template-columns:10px 1fr 14px 26px;align-items:center;gap:4px;height:17.4px;border-bottom:1px solid #c9b088}
+.skill span{font:11px/1 var(--title);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skill small{font:8px system-ui;color:var(--ink-soft)}
+.skill em{font:normal 8px system-ui;color:var(--ink-soft);text-align:center}
+.skill b{height:13px;font:bold 10px/13px system-ui;text-align:center;background:#fffaf0;border:1px solid #8a6a38;border-radius:2px}
+.dot{width:8px;height:8px;border-radius:50%;border:1px solid #6e4a18;background:#f4e6c4}
+.dot.on{background:radial-gradient(circle at 35% 35%,#9bd17a,#2f6b1e)}
+.book-foot{margin-top:4px;font:italic 11px var(--title);color:var(--ink)}
+
+/* Medallones de características: centro (--x, --y) sobre el arco */
+.medal{
+  --d:84px;
+  position:absolute;z-index:2;width:var(--d);height:var(--d);
+  left:calc(var(--x) - var(--d) / 2);top:calc(var(--y) - var(--d) / 2);
+  padding:7px;border-radius:50%;background:var(--gold-ring);
+  box-shadow:0 0 0 1px #3e2a10,0 4px 9px #000a
+}
+.medal .face{
+  width:100%;height:100%;display:grid;place-items:center;border-radius:50%;
+  font:700 36px/1 var(--title);color:#2c1c0c;padding-bottom:6px;
+  background:radial-gradient(circle at 50% 38%,#fffdf5,#f1e3c2 65%,#d3b781);
+  box-shadow:inset 0 0 0 1px #6e4a18,inset 0 3px 8px #0005
+}
+.medal .mod{
+  position:absolute;left:-4px;top:-2px;width:28px;height:28px;display:grid;place-items:center;
+  font:bold 12px/1 system-ui;font-style:normal;color:#2c1c0c;border-radius:50%;
+  background:radial-gradient(circle at 50% 40%,#fffdf5,#e9d6ad);
+  box-shadow:0 0 0 1px #3e2a10,0 0 0 3px #e1bd68,0 0 0 4px #3e2a10,0 2px 4px #0007
+}
+.medal .tag{
+  position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  padding:3px 7px;white-space:nowrap;
+  font:bold 7.5px/1 system-ui;letter-spacing:1px;text-transform:uppercase;color:#fbecc0;
+  background:var(--plaque);border:1px solid #e1bd68;border-radius:2px;
+  box-shadow:0 0 0 1px #2c1c0c
+}
+.ab-str{--x:290px;--y:212px}
+.ab-dex{--x:400px;--y:118px}
+.ab-con{--x:528px;--y:104px}
+.ab-int{--x:640px;--y:178px}
+.ab-wis{--x:700px;--y:300px}
+.ab-cha{--x:706px;--y:428px}
+
+/* Ojo (Avistar) y velocidad */
+.eye{
+  position:absolute;z-index:3;left:262px;top:478px;width:76px;height:76px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle,#fffdf5 0 48%,#c9c4b8 52%,#f4efe4 58%,#9a9384 100%);
+  box-shadow:0 0 0 1px #4a4438,0 3px 6px #0006
+}
+.eye small{font:bold 7px system-ui;letter-spacing:1px;text-transform:uppercase;color:#4a4438}
+.eye b{font:700 22px/1 var(--title);color:#2c1c0c}
+.speed{
+  position:absolute;z-index:3;left:600px;top:528px;width:150px;padding:5px 0 0;text-align:center;
+  background:var(--gold);border-radius:6px;box-shadow:0 0 0 1px #3e2a10,0 3px 6px #0007
+}
+.speed b{display:block;margin:0 8px;padding:3px 0;font:700 17px/1 var(--title);background:#f8eed4;border:1px solid #6e4a18}
+.speed span{display:block;padding:3px 0;font:bold 8px/1 system-ui;letter-spacing:2px;text-transform:uppercase;color:#2c1c0c}
+
+/* ---------- Paneles inferiores ---------- */
+.bottom{display:grid;grid-template-columns:250px 1fr 272px;gap:10px;height:404px;margin-top:6px}
+.card{
+  position:relative;display:flex;flex-direction:column;min-height:0;overflow:hidden;
+  padding:0 8px 8px;
+  background:linear-gradient(#fbf3df,#efe1bf);
+  border:4px solid transparent;border-image:var(--gold) 1;
+  box-shadow:0 0 0 1px #3e2a10,0 4px 10px #0006
+}
+.bar{
+  margin:0 -8px 7px;padding:6px 8px 5px;text-align:center;
+  font:700 16px/1 var(--title);letter-spacing:1px;color:#f7e7bd;text-shadow:0 1px 2px #000;
+  background:var(--bar);border-bottom:2px solid #c9a24f
+}
+.sub{margin:8px 0 2px;font:700 13px/1 var(--title);color:#2c1c0c;border-bottom:1px solid #8a6a38;padding-bottom:2px}
+.label{font:700 12px var(--title)}
+
+/* Papel pautado */
+.lined{
+  --lh:16px;
+  margin:0;padding:0;line-height:var(--lh);font-size:11px;
+  background:repeating-linear-gradient(transparent 0 calc(var(--lh) - 1px),#bfa77d calc(var(--lh) - 1px) var(--lh))
+}
+.lined p{margin:0}
+.lined ul,ul.lined{margin:0;padding-left:14px;list-style:"◆ "}
+.lined li::marker{color:#8a6a38;font-size:8px}
+
+/* Armas */
+.weapon{margin-bottom:6px;border:1px solid #8a6a38;background:#fffaf0;box-shadow:inset 0 0 0 1px #f4e6c4}
+.w-row{display:grid;grid-template-columns:1fr 1fr 1fr}
+.w-head{grid-template-columns:1.7fr 1fr}
+.weapon label{display:block;padding:1px 4px 2px;font:bold 7px system-ui;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft)}
+.weapon label+label{border-left:1px solid #c9b088}
+.weapon label span{display:block;font:12px/1.2 var(--small);letter-spacing:0;text-transform:none;color:var(--ink);white-space:nowrap}
+.w-name span{font-weight:bold}
+.w-table{width:100%;border-collapse:collapse;border-top:1px solid #c9b088}
+.w-table th{padding:1px 4px;font:bold 7px system-ui;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);text-align:left;background:#f4e6c4}
+.w-table td{padding:0 4px;height:15px;font:11px/15px var(--small);border-top:1px solid #e0cfa8}
+.w-table th+th,.w-table td+td{border-left:1px solid #c9b088;text-align:center;width:28%}
+.w-table td+td{font-weight:bold}
+.w-table tr.bonus td:first-child{color:#5b3d1d}
+.weapon small{display:block;padding:1px 4px 2px;font:italic 9px var(--small);color:var(--ink-soft);border-top:1px dotted #c9b088}
+.attacks .lined{flex:1}
+.note{color:var(--ink-soft);font-style:italic}
+
+/* Puntos de golpe */
+.hp-top{display:grid;grid-template-columns:1fr 1fr;border:1px solid #8a6a38;background:#fffaf0}
+.hp-top>div{display:flex;align-items:center;justify-content:space-between;padding:3px 7px}
+.hp-top>div+div{border-left:1px solid #8a6a38}
+.hp-top small,.hp-current small,.hp-sub small{font:bold 7px system-ui;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-soft)}
+.hp-top b{font:700 22px/1 var(--title)}
+.hp-current{margin-top:5px;text-align:center;border:1px solid #8a6a38;background:#fffaf0;box-shadow:inset 0 0 12px #c9a86a66}
+.hp-current div{height:54px;font:700 36px/54px var(--title)}
+.hp-current small{display:block;border-top:1px solid #c9b088;padding:2px 0}
+.hp-sub{display:grid;grid-template-columns:1fr 1.4fr;gap:6px;margin-top:5px}
+.hp-sub>div{border-bottom:1px solid #8a6a38;display:flex;flex-direction:column-reverse}
+.hp-sub span{min-height:16px;font:12px var(--small)}
+.vitals .notes{flex:1}
+
+.traits .lined{flex:1;font-size:10.5px;--lh:15px}
+.traits ul{margin-bottom:0}
+
+/* ---------- Preludio ---------- */
+.sheet.prelude{display:flex;flex-direction:column;padding:26px 30px 30px}
+.sheet.prelude:after{ /* marco interior */
+  content:"";position:absolute;inset:10px;pointer-events:none;
+  border:1px solid #a8823f;outline:3px double #c9a24f;outline-offset:3px
+}
+.prose.pre-wrap{ /* zona superior de la primera hoja: una columna que rodea la figura */
+  flex:none;height:var(--figure-h);column-count:1;margin-bottom:12px
+}
+.pre-figure{
+  float:left;width:var(--figure-w);height:var(--figure-h);margin:-6px 4px 0 -14px;
+  mix-blend-mode:multiply; /* el fondo blanco se funde con el pergamino */
+  /* Contorno de la silueta para que el texto la rodee (images.figureShape en character-data.js) */
+  shape-outside:var(--figure-shape);
+  shape-margin:10px
+}
+.pre-wrap .lead::first-letter{margin-top:2px}
+/* Junto a la figura los fondos y bordes de bloque pasarían por debajo de ella: se eliminan */
+.pre-wrap .pre-meta{background:none;border:0;padding:0}
+.pre-wrap .pre-title blockquote{border-top:0;padding-top:4px}
+.prose.pre-wrap h2{border-bottom:0} /* más específico que .prose h2, que va después */
+.pre-title{margin-bottom:12px}
+.pre-title h1{margin:4px 0 2px;font-size:28px;line-height:1.1;text-align:left}
+.pre-sub{margin:0 0 8px;font:italic 12px var(--small);color:var(--ink-soft)}
+.pre-meta{padding:6px 10px;background:#fbf3df99;border:1px solid #c9a24f;border-left:4px solid #8a5f22}
+.pre-meta p{margin:0;font:11.5px/1.55 var(--small)}
+.pre-meta strong{font:700 12px var(--title);color:#5b3d1d}
+.pre-title blockquote{
+  margin:10px 0 0;padding:8px 6px 0;border-top:1px solid #c9a24f;
+  font:italic 12px/1.45 var(--small);color:#4a3210;text-align:center
+}
+.pre-band{
+  margin:0 0 12px;padding-bottom:5px;text-align:center;
+  font:700 14px var(--title);letter-spacing:1px;color:#5b3d1d;border-bottom:3px double #c9a24f
+}
+.prose{
+  flex:1 1 0;min-height:0;overflow:hidden;
+  column-count:2;column-gap:26px;column-rule:1px solid #c9b088;column-fill:auto;
+  font:11px/1.45 Georgia,'Times New Roman',serif;color:#2e2214;text-align:justify;hyphens:auto
+}
+.prose p{margin:0 0 5px}
+.prose h2{
+  margin:4px 0 6px;padding-bottom:3px;break-after:avoid;
+  font:700 16px/1.15 var(--title);color:#5b1a10;border-bottom:1px solid #c9a24f;text-align:left
+}
+.prose h2:not(:first-child){margin-top:12px}
+.prose .lead::first-letter{float:left;margin:3px 5px 0 0;font:700 38px/.8 var(--title);color:#7a1f14}
+.prose strong{color:#4a1a10}
+.prose hr{border:0;height:12px;margin:8px 0;background:radial-gradient(circle,#a8823f 0 2px,transparent 3px) center/18px 12px repeat-x}
+.prose .notes-title{
+  margin:6px 0 6px;padding:5px 8px;text-align:center;break-after:avoid;
+  font:700 14px/1 var(--title);color:#f7e7bd;background:var(--bar);border:1px solid #c9a24f
+}
+.prose .trait{padding:3px 0 3px 8px;border-left:3px solid #c9a24f;font-size:11px;break-inside:avoid}
+.pre-folio{position:absolute;left:0;right:0;bottom:16px;text-align:center;font:italic 10px var(--small);color:var(--ink-soft)}
+
+/* ---------- Impresión ---------- */
+@media print{
+  .sheet{margin:0;box-shadow:none;zoom:1!important;break-inside:avoid}
+  /* Salto de página antes de cada hoja que sigue a otra (sin hojas en blanco al principio ni al final) */
+  main.sheet + #prelude .sheet:first-child,#prelude .sheet + .sheet{break-before:page}
+}
+
+/* ---------- Índice de personajes (index.html de la raíz) ---------- */
+.roster{max-width:1000px;margin:30px auto;padding:0 16px}
+.roster-head{text-align:center;color:#f3e5c5;margin-bottom:24px}
+.roster-head .eyebrow{color:#c9a24f}
+.roster-head h1{margin:6px 0;font:700 42px/1.1 var(--title);color:#f3e5c5}
+.roster-head p{margin:0;font:italic 14px var(--small);color:#cdb58a}
+.roster-head code{color:#ffdda2}
+.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.roster-card{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:20px 16px 16px;color:var(--ink);
+  background:radial-gradient(ellipse at 50% 35%,#fffaf0,#f1e3c2 60%,#d8bd8a);
+  border:4px solid transparent;border-image:var(--gold) 1;
+  box-shadow:0 0 0 1px #3e2a10,0 8px 24px #000a
+}
+.roster-portrait{
+  display:block;width:170px;height:170px;border-radius:50%;overflow:hidden;
+  background:#f8eed4;box-shadow:0 0 0 5px #e1bd68,0 0 0 6px #3e2a10,0 4px 10px #0007
+}
+.roster-portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;mix-blend-mode:multiply}
+.roster-card h2{margin:16px 0 0;font:700 28px/1.1 var(--title)}
+.roster-card h2 a{color:#2c1c0c;text-decoration:none}
+.roster-sub{margin:2px 0 0;font:italic 13px var(--small);color:var(--ink-soft)}
+.roster-meta{margin:8px 0 14px;font:12px var(--small)}
+.roster-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
+.roster-links a{
+  padding:5px 10px;font:bold 10px system-ui;letter-spacing:1px;text-transform:uppercase;
+  color:#fbecc0;text-decoration:none;background:var(--plaque);border:1px solid #e1bd68;border-radius:3px
+}
+.roster-links a:hover{background:linear-gradient(#7a5418,#3e2a10)}
+.roster-missing{opacity:.75}
+.roster-empty{color:#f3e5c5;text-align:center}

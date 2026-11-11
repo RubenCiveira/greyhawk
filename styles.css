@@ -1,0 +1,17 @@
+/* Base: tipografía, barra de herramientas e impresión. El aspecto de la ficha está en theme.css */
+*{box-sizing:border-box}
+body{margin:0;background:#29231e;color:#302619;font:12px/1.35 Georgia,'Times New Roman',serif}
+.toolbar{max-width:210mm;margin:15px auto;padding:0 8px;display:flex;align-items:center;gap:16px;color:#fff;font:14px system-ui}
+.toolbar button{border:0;border-radius:6px;padding:10px 18px;background:#e4c68b;cursor:pointer;font:inherit;white-space:nowrap}
+.toolbar code{color:#ffdda2}
+.toolbar a.back{color:#e4c68b;text-decoration:none;white-space:nowrap}
+.toolbar a.back:hover{text-decoration:underline}
+.toolbar .pick{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.toolbar select{font:inherit;padding:6px 8px;border-radius:6px;border:1px solid #b48948;background:#3a312a;color:#fff}
+[contenteditable=true]:focus{outline:2px dashed #b48948;background:#fff8d9}
+@page{size:A4 portrait;margin:0}
+@media(max-width:820px){.toolbar{flex-wrap:wrap;gap:8px;font-size:13px}}
+@media print{
+  html,body{background:#fff;margin:0;padding:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .toolbar{display:none}
+}
